@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "fast-glob": "^3.3.3",
+    "sharp": "^0.34.5"
+  },
+  "scripts": {
+    "images:convert": "node convert-images.mjs"
+  }
+}
