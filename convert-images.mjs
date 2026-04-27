@@ -3,8 +3,6 @@ import sharp from "sharp";
 import path from "node:path";
 import fs from "node:fs/promises";
 
-const prefix = process.argv[2] || "image";
-
 const CONFIG = {
     inputDir: "./images",
     outputDir: "./optimized",
@@ -13,75 +11,122 @@ const CONFIG = {
     generateAvif: true,
 
     webpQuality: 82,
-    avifQuality: 50
+    avifQuality: 50,
+
+    resizeWidth: 2000
 };
 
 async function ensureDir(dir) {
-    await fs.mkdir(dir, { recursive: true });
+    await fs.mkdir(dir, {
+        recursive: true
+    });
 }
 
-async function convertFile(file, index) {
+function getFolderName(file) {
 
-    const number = index + 1;
+    const relative = path.relative(
+        CONFIG.inputDir,
+        file
+    );
 
-    const baseName = `${prefix}-${number}`;
+    const parts = relative.split(path.sep);
 
-    await ensureDir(CONFIG.outputDir);
+    if (parts.length === 1) {
+        return "image";
+    }
+
+    return parts[0];
+}
+async function convertFile(
+    file,
+    folderName,
+    outputName
+) {
+
+    const targetDir = path.join(
+        CONFIG.outputDir,
+        folderName
+    );
+
+    await ensureDir(targetDir);
+
+    const image = sharp(file)
+        .resize({
+            width: CONFIG.resizeWidth,
+            fit: "inside",
+            withoutEnlargement: true
+        });
 
     if (CONFIG.generateWebp) {
-        await sharp(file)
-            .resize({
-                width: 2000,
-                fit: "inside",
-                withoutEnlargement: true
-            })
+
+        await image
+            .clone()
             .webp({
                 quality: CONFIG.webpQuality,
                 effort: 6
             })
             .toFile(
                 path.join(
-                    CONFIG.outputDir,
-                    `${baseName}.webp`
+                    targetDir,
+                    `${outputName}.webp`
                 )
             );
 
-        console.log(`✓ ${baseName}.webp`);
+        console.log(
+            `✓ ${folderName}/${outputName}.webp`
+        );
     }
 
     if (CONFIG.generateAvif) {
-        await sharp(file)
-            .resize({
-                width: 2000,
-                fit: "inside",
-                withoutEnlargement: true
-            })
+
+        await image
+            .clone()
             .avif({
                 quality: CONFIG.avifQuality,
                 effort: 7
             })
             .toFile(
                 path.join(
-                    CONFIG.outputDir,
-                    `${baseName}.avif`
+                    targetDir,
+                    `${outputName}.avif`
                 )
             );
 
-        console.log(`✓ ${baseName}.avif`);
+        console.log(
+            `✓ ${folderName}/${outputName}.avif`
+        );
     }
-}
 
+}
 async function main() {
 
     const files = await fg(
         `${CONFIG.inputDir}/**/*.{jpg,jpeg,png}`
     );
 
-    for (const [index, file] of files.entries()) {
-        await convertFile(file, index);
+    const counters = {};
+
+    for (const file of files) {
+
+        const folderName = getFolderName(file);
+
+        if (!counters[folderName]) {
+            counters[folderName] = 1;
+        }
+
+        const filename =
+            `${folderName}-${counters[folderName]}`;
+
+        counters[folderName]++;
+
+        await convertFile(
+            file,
+            folderName,
+            filename
+        );
     }
 
-    console.log("Done.");
+    console.log("\nDone.");
 }
 
 main().catch(console.error);
