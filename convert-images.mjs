@@ -37,11 +37,15 @@ function getFolderName(file) {
 
     return parts[0];
 }
-async function convertFile(
-    file,
-    folderName,
-    outputName
-) {
+async function exists(file) {
+    try {
+        await fs.access(file);
+        return true;
+    } catch {
+        return false;
+    }
+}
+async function convertFile(file, folderName, outputName) {
 
     const targetDir = path.join(
         CONFIG.outputDir,
@@ -50,53 +54,57 @@ async function convertFile(
 
     await ensureDir(targetDir);
 
-    const image = sharp(file)
-        .resize({
-            width: CONFIG.resizeWidth,
-            fit: "inside",
-            withoutEnlargement: true
-        });
+    const webpPath = path.join(
+        targetDir,
+        `${outputName}.webp`
+    );
 
+    const avifPath = path.join(
+        targetDir,
+        `${outputName}.avif`
+    );
+
+    const image = sharp(file).resize({
+        width: CONFIG.resizeWidth,
+        fit: "inside",
+        withoutEnlargement: true
+    });
+
+    // WEBP
     if (CONFIG.generateWebp) {
 
-        await image
-            .clone()
-            .webp({
-                quality: CONFIG.webpQuality,
-                effort: 6
-            })
-            .toFile(
-                path.join(
-                    targetDir,
-                    `${outputName}.webp`
-                )
-            );
+        if (await exists(webpPath)) {
+            console.log(`↷ skip ${folderName}/${outputName}.webp`);
+        } else {
+            await image
+                .clone()
+                .webp({
+                    quality: CONFIG.webpQuality,
+                    effort: 6
+                })
+                .toFile(webpPath);
 
-        console.log(
-            `✓ ${folderName}/${outputName}.webp`
-        );
+            console.log(`✓ ${folderName}/${outputName}.webp`);
+        }
     }
 
+    // AVIF
     if (CONFIG.generateAvif) {
 
-        await image
-            .clone()
-            .avif({
-                quality: CONFIG.avifQuality,
-                effort: 7
-            })
-            .toFile(
-                path.join(
-                    targetDir,
-                    `${outputName}.avif`
-                )
-            );
+        if (await exists(avifPath)) {
+            console.log(`↷ skip ${folderName}/${outputName}.avif`);
+        } else {
+            await image
+                .clone()
+                .avif({
+                    quality: CONFIG.avifQuality,
+                    effort: 7
+                })
+                .toFile(avifPath);
 
-        console.log(
-            `✓ ${folderName}/${outputName}.avif`
-        );
+            console.log(`✓ ${folderName}/${outputName}.avif`);
+        }
     }
-
 }
 async function main() {
 
