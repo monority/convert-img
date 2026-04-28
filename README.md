@@ -9,7 +9,10 @@ Ce projet contient un script Node.js pour convertir et optimiser des images.
 
 
 ## Utilisation
+
 1. Place tes images à convertir dans le dossier `images/`.
+  - Tu peux organiser tes images dans des sous-dossiers (ex : `images/vacances/`, `images/projets/`).
+  - La structure des dossiers sera conservée dans le dossier `optimized/` lors de la conversion.
 2. Exécute le script avec la commande suivante :
 
    ```bash
@@ -23,16 +26,17 @@ Ce projet contient un script Node.js pour convertir et optimiser des images.
    node convert-images.mjs vacances
    ```
 
-3. Les images optimisées seront générées dans le dossier `optimized/`.
+3. Les images optimisées seront générées dans le dossier `optimized/`, en respectant la structure des dossiers d'origine.
 
 ## Prérequis
 - Node.js installé sur ta machine
 - Dépendances installées via `npm install` (voir `package.json`)
 
+
 ## Structure du projet
 - `convert-images.mjs` : script principal de conversion
-- `images/` : dossier source des images à convertir
-- `optimized/` : dossier de sortie des images optimisées
+- `images/` : dossier source des images à convertir (tu peux créer des sous-dossiers)
+- `optimized/` : dossier de sortie des images optimisées (la structure des sous-dossiers est conservée)
 
 ## Licence
 Ce projet est open source.
