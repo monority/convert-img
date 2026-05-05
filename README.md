@@ -1,6 +1,12 @@
-# Convert Images Script
+<h1 align="center">
+Convert images tool
+</h1>
 
-Ce projet contient un script Node.js pour convertir et optimiser des images.
+
+<p align="center">
+  <img src="./logo-convert.png" />
+</p>
+
 
 ## Fonctionnalités
 - Conversion d'images dans le dossier `images/`
