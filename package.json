@@ -1,9 +1,16 @@
 {
+  "name": "convert-img",
+  "version": "1.0.0",
+  "description": "Image conversion and optimization tool",
+  "main": "convert-images.mjs",
+  "type": "module",
   "dependencies": {
     "fast-glob": "^3.3.3",
     "sharp": "^0.34.5"
   },
   "scripts": {
-    "images:convert": "node convert-images.mjs"
+    "ci": "node convert-images.mjs",
+    "images:convert": "node convert-images.mjs",
+    "convert": "node convert-images.mjs"
   }
 }

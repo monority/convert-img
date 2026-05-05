@@ -1,82 +1,108 @@
-<h1 align="center">
-Convert images tool
-</h1>
-
+# Convert images tool
 
 <p align="center">
   <img src="./logo-convert.png" />
 </p>
 
+## Features
+- Convert images in the `images/` folder
+- Optimize and export converted images to the `optimized/` folder
+- Support for modern formats (WebP, AVIF)
+- **Parallel processing** with configurable concurrency limit
+- **Smart cache**: avoids re-conversion if source file hasn't changed
+- **Detailed statistics** (duration, file size savings, image count)
+- **Flexible CLI options** for custom conversions
+- Supported source formats: JPG, JPEG, PNG, TIFF, BMP, WebP, GIF
 
-## Fonctionnalités
-- Conversion d'images dans le dossier `images/`
-- Optimisation et export des images converties dans le dossier `optimized/`
-- Prise en charge des formats modernes (WebP, AVIF)
-- **Traitement parallèle** avec limite de concurrence configurable
-- **Cache intelligent** : évite les re-conversions si le fichier source n'a pas changé
-- **Rapport de statistiques** détaillé (temps, gain de taille, nombre d'images)
-- **Options CLI flexibles** pour personnaliser la conversion
-- Formats source supportés : JPG, JPEG, PNG, TIFF, BMP, WebP, GIF
+## Usage
 
+1. Place your images to convert in the `images/` folder.
+   - You can organize images in subfolders (e.g., `images/vacations/`, `images/projects/`).
+   - The folder structure will be preserved in the `optimized/` output folder.
 
-## Utilisation
-
-1. Place tes images à convertir dans le dossier `images/`.
-  - Tu peux organiser tes images dans des sous-dossiers (ex : `images/vacances/`, `images/projets/`).
-  - La structure des dossiers sera conservée dans le dossier `optimized/` lors de la conversion.
-
-2. Exécute le script avec la commande suivante :
+2. Run the conversion:
 
    ```bash
-   node convert-images.mjs [prefix] [options]
+   ci [prefix] [options]
    ```
 
-   - `[prefix]` (optionnel) : permet de choisir le nom de base des images générées (par défaut : nom du dossier).
-     Par exemple, pour générer des fichiers nommés `vacances-1.webp`, `vacances-2.avif`, etc. :
+   - `[prefix]` (optional): base name for generated files (default: folder name).
+     For example, to generate files named `vacations-1.webp`, `vacations-2.avif`, etc.:
 
    ```bash
-   node convert-images.mjs vacances
+   npm run ci vacations
    ```
 
-### Options CLI
+### CLI Options
 
-- `--webp-quality <0-100>` : Qualité WebP (défaut : 82)
-- `--avif-quality <0-100>` : Qualité AVIF (défaut : 50)
-- `--width <pixels>` : Largeur maximale de redimensionnement (défaut : 2000)
-- `--no-webp` : Désactiver la génération WebP
-- `--no-avif` : Désactiver la génération AVIF
-- `--concurrency <nombre>` : Nombre de workers parallèles (défaut : 4)
+**Shortcuts (very short):**
+- `-w N` : WebP quality (alias for `--webp-quality`)
+- `-a N` : AVIF quality (alias for `--avif-quality`)
+- `-W N` : Max width (alias for `--width`)
+- `-n`   : Disable WebP (alias for `--no-webp`)
+- `-A`   : Disable AVIF (alias for `--no-avif`)
+- `-c N` : Parallel workers (alias for `--concurrency`)
+- `-h`   : Show help (alias for `--help`)
 
-### Exemples
+**Long options:**
+- `--webp-quality <0-100>` : WebP quality (default: 82)
+- `--avif-quality <0-100>` : AVIF quality (default: 50)
+- `--width <pixels>` : Maximum resize width (default: 2000)
+- `--no-webp` : Disable WebP generation
+- `--no-avif` : Disable AVIF generation
+- `--concurrency <number>` : Number of parallel workers (default: 4)
+- `--help` : Show this help
+
+**Quick command:** `npm run ci` (or just `ci` after adding to PATH)
+
+### Examples
 
 ```bash
-# Conversion avec préfixe personnalisé
-node convert-images.mjs vacances
+# Show interactive menu
+npm run ci
 
-# Conversion avec qualité WebP personnalisée
-node convert-images.mjs --webp-quality 90
+# Show help
+npm run ci -- --help
 
-# Conversion sans AVIF, avec largeur 1500px
-node convert-images.mjs --no-avif --width 1500
+# Conversion with custom WebP quality using shortcut
+npm run ci -- -w 90
 
-# Conversion avec 8 workers parallèles
-node convert-images.mjs --concurrency 8
+# Disable AVIF, set width to 1500px using shortcuts
+npm run ci -- -n -W 1500
 
-# Combinaison d'options
-node convert-images.mjs projet --webp-quality 85 --avif-quality 60 --width 1920
+# 8 parallel workers
+npm run ci -- -c 8
+
+# Combination: prefix + options
+npm run ci -- projet -w 85 -a 60 -W 1920
+
+# Full custom configuration via interactive menu (option 2)
+npm run ci
+# then choose option 2 and follow prompts
 ```
 
-3. Les images optimisées seront générées dans le dossier `optimized/`, en respectant la structure des dossiers d'origine.
+3. Optimized images will be generated in the `optimized/` folder, preserving the original folder structure.
 
-## Prérequis
-- Node.js installé sur ta machine
-- Dépendances installées via `npm install` (voir `package.json`)
+## Prerequisites
+- Node.js installed on your machine
+- Install dependencies via `npm install` (see `package.json`)
 
+## Project Structure
+- `convert-images.mjs` : Main conversion script
+- `images/` : Source folder for images to convert (create subfolders as needed)
+- `optimized/` : Output folder for optimized images (subfolder structure is preserved)
 
-## Structure du projet
-- `convert-images.mjs` : script principal de conversion
-- `images/` : dossier source des images à convertir (tu peux créer des sous-dossiers)
-- `optimized/` : dossier de sortie des images optimisées (la structure des sous-dossiers est conservée)
+## Interactive Menu
 
-## Licence
-Ce projet est open source.
+Running `npm run ci` without arguments displays an interactive menu:
+
+1. **Convert with default settings** - Uses built-in defaults (WebP + AVIF, q=82/50, width=2000, 4 workers)
+2. **Configure conversion** - Step-by-step prompts for all settings (prefix, qualities, width, workers, enable/disable formats)
+3. **Help** - Shows CLI help
+4. **Quit** - Exit the program
+
+Use **↑ ↓** arrow keys to navigate, **Enter** to select.
+
+## License
+This project is open source.
+
