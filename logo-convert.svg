@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 480" role="img" aria-labelledby="title desc">
+  <title id="title">Convert Img</title>
+  <desc id="desc">Image conversion logo with frame and swap arrows.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1e293b"/>
+      <stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#67e8f9"/>
+      <stop offset="1" stop-color="#60a5fa"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="480" rx="48" fill="url(#bg)"/>
+  <rect x="54" y="54" width="612" height="372" rx="34" fill="#0b1220" stroke="#243044" stroke-width="4"/>
+  <rect x="120" y="122" width="186" height="152" rx="24" fill="none" stroke="url(#accent)" stroke-width="14"/>
+  <circle cx="166" cy="170" r="18" fill="#22d3ee"/>
+  <path d="M145 234l36-42 34 32 22-20 27 30" fill="none" stroke="#a5f3fc" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M392 154h82" fill="none" stroke="#e2e8f0" stroke-width="16" stroke-linecap="round"/>
+  <path d="M450 126l28 28-28 28" fill="none" stroke="#e2e8f0" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M512 326h-82" fill="none" stroke="url(#accent)" stroke-width="16" stroke-linecap="round"/>
+  <path d="M454 298l-28 28 28 28" fill="none" stroke="url(#accent)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="392" y="192" width="152" height="132" rx="28" fill="#111827" stroke="#334155" stroke-width="4"/>
+  <path d="M426 228h84" stroke="#67e8f9" stroke-width="12" stroke-linecap="round"/>
+  <path d="M426 264h52" stroke="#93c5fd" stroke-width="12" stroke-linecap="round"/>
+</svg>
